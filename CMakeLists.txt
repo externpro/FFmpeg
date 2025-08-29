@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.31)
 project(ffmpeg)
-include(flags OPTIONAL)
+include(xpflags)
 include(configure.cmake)
 add_subdirectory(libavdevice)
