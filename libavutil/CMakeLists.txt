@@ -6,7 +6,6 @@ set(public_headers
   audio_fifo.h
   audioconvert.h
   avassert.h
-  avconfig.h
   avstring.h
   avutil.h
   base64.h
@@ -25,7 +24,6 @@ set(public_headers
   downmix_info.h
   error.h
   eval.h
-  ffversion.h
   fifo.h
   file.h
   frame.h
@@ -68,4 +66,7 @@ set(public_headers
 xpGetVersionString(GIT_DESCRIBE_TAGS)
 configure_file(ffversion.h.in ffversion.h)
 list(APPEND public_headers ${CMAKE_CURRENT_BINARY_DIR}/ffversion.h)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  list(APPEND public_headers ${FFmpeg_SOURCE_DIR}/mswbin/include/libavutil/avconfig.h)
+endif()
 install(FILES ${public_headers} DESTINATION ${incDir}/lib${lib_name})
