@@ -1,4 +1,4 @@
-set(lib_name libavdevice)
+set(lib_name avdevice)
 set(lib_srcs
   alldevices.c
   alsa.c
@@ -75,3 +75,8 @@ set(lib_srcs
   xv.c
   )
 add_library(${lib_name} STATIC ${lib_srcs})
+set(public_headers
+  avdevice.h
+  version.h
+  )
+install(FILES ${public_headers} DESTINATION ${incDir}/lib${lib_name})
