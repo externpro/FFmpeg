@@ -66,6 +66,12 @@ else()
   find_package(yasm)
   get_filename_component(yasmBinDir ${xpuse-yasm_DIR}/../../bin ABSOLUTE)
   configure_file(${xpuse-openh264_DIR}/openh264.pc.in ${CMAKE_BINARY_DIR}/openh264.pc @ONLY)
+  file(READ ${CMAKE_BINARY_DIR}/openh264.pc OPENH264_PC)
+  string(REPLACE "Libs: -L\${libdir} -lopenh264 -lstdc++"
+    "Libs: -L\${libdir} -lopenh264 -lstdc++ -lm -lpthread"
+    OPENH264_PC "${OPENH264_PC}"
+    )
+  file(WRITE ${CMAKE_BINARY_DIR}/openh264.pc "${OPENH264_PC}")
   set(XP_CONFIGURE ${CMAKE_COMMAND} -E env PKG_CONFIG_PATH=${CMAKE_BINARY_DIR}
     PATH=${yasmBinDir}:$ENV{PATH} # prepend path to yasm
     <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> #--enable-shared --disable-static
@@ -73,7 +79,7 @@ else()
     --disable-libxcb --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxcb-shape
     --disable-lzma --disable-xlib --disable-zlib
     )
-  list(APPEND XP_CONFIGURE --enable-libopenh264 --disable-sdl)
+  list(APPEND XP_CONFIGURE --enable-libopenh264)
   list(APPEND XP_CONFIGURE --disable-debug)
   xpVerboseListing("[CONFIGURE]" "${XP_CONFIGURE}")
   include(ExternalProject)
