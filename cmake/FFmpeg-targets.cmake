@@ -14,6 +14,20 @@ xpGetPkgVar(openh264 LIBRARIES) # sets OPENH264_LIBRARIES
 set(_ffmpeg_avcodec_libs ${OPENH264_LIBRARIES})
 # _ffmpeg_*_deps
 set(_ffmpeg_avdevice_deps avfilter avformat)
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  find_library(Cocoa_LIB Cocoa)
+  find_library(AVFoundation_LIB AVFoundation)
+  find_library(CoreMedia_LIB CoreMedia)
+  find_library(VideoDecodeAcceleration_LIB VideoDecodeAcceleration)
+  find_library(QuartzCore_LIB QuartzCore)
+  set(_ffmpeg_avdevice_libs
+    ${Cocoa_LIB}
+    ${AVFoundation_LIB}
+    ${CoreMedia_LIB}
+    ${VideoDecodeAcceleration_LIB}
+    ${QuartzCore_LIB}
+    )
+endif()
 set(_ffmpeg_avfilter_deps avcodec swresample swscale) # libavfilter code calls swr_*, sws_* functions
 set(_ffmpeg_avformat_deps avcodec)
 set(_ffmpeg_avcodec_deps swresample) # libavcodec code calls swr_* functions
