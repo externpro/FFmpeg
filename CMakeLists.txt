@@ -18,7 +18,6 @@ string(JOIN "\n" EXT1
   "# https://github.com/FFmpeg/FFmpeg/blob/n2.6.2/configure#L2667-L2675"
   "# TRICKY ffmpeg_all_libs used by FFmpeg-targets.cmake"
   "set(ffmpeg_all_libs ${libs})"
-  "string(REPLACE \";\" \" \" ffmpeg_all_libs \"\${ffmpeg_all_libs}\")"
   "# FFMPEG_LIBRARIES - the FFmpeg libraries"
   "set(FFMPEG_LIBRARIES \${ffmpeg_all_libs})"
   "list(TRANSFORM FFMPEG_LIBRARIES PREPEND ffmpeg::)"
@@ -36,7 +35,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
   string(JOIN "\n" EXT3
     "# FFMPEG_DLLNAMES - the FFmpeg shared object names (dll, so)"
     "set(FFMPEG_DLLNAMES ${dlls})"
-    "string(REPLACE \";\" \" \" FFMPEG_DLLNAMES \"\${FFMPEG_DLLNAMES}\")"
     "# FFMPEG_DLLS - the full path to FFmpeg shared objects (dll, so)"
     "set(FFMPEG_DLLS \${FFMPEG_DLLNAMES})"
     "list(TRANSFORM FFMPEG_DLLS PREPEND \${XP_ROOTDIR}/${CMAKE_INSTALL_BINDIR}/)"
@@ -87,7 +85,7 @@ else()
     INSTALL_COMMAND # use default
     )
   ExternalProject_Get_Property(${PROJECT_NAME} INSTALL_DIR)
-  install(DIRECTORY ${INSTALL_DIR}/bin/ DESTINATION ${CMAKE_INSTALL_BINDIR})
+  install(DIRECTORY ${INSTALL_DIR}/bin/ DESTINATION ${CMAKE_INSTALL_BINDIR} USE_SOURCE_PERMISSIONS)
   install(DIRECTORY ${INSTALL_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${prj})
   list(TRANSFORM libs PREPEND "${INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}")
   list(TRANSFORM libs APPEND "${CMAKE_STATIC_LIBRARY_SUFFIX}")
