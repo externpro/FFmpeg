@@ -32,6 +32,7 @@ xpPackageDevel(TARGETS_FILE ${targetsFile} DEPS openh264)
 install(FILES cmake/${targetsFile}.cmake DESTINATION ${XP_INSTALL_CMAKEDIR})
 string(TOLOWER ${PROJECT_NAME} prj)
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  include(cmake/configure.cmake)
   set(incDir ${CMAKE_INSTALL_INCLUDEDIR}/${prj})
   foreach(lib ${libs})
     add_subdirectory(lib${lib}) # each library installs headers to incDir
