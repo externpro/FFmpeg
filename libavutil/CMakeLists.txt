@@ -1,11 +1,12 @@
 set(lib_name avutil)
 set(public_headers
   adler32.h
+  aes_ctr.h
   aes.h
   attributes.h
   audio_fifo.h
-  audioconvert.h
   avassert.h
+# avconfig.h # TODO
   avstring.h
   avutil.h
   base64.h
@@ -19,16 +20,32 @@ set(public_headers
   common.h
   cpu.h
   crc.h
+  des.h
   dict.h
   display.h
+  dovi_meta.h
   downmix_info.h
+  encryption_info.h
   error.h
   eval.h
   fifo.h
   file.h
   frame.h
   hash.h
+  hdr_dynamic_metadata.h
   hmac.h
+  hwcontext_cuda.h
+  hwcontext_d3d11va.h
+  hwcontext_drm.h
+  hwcontext_dxva2.h
+  hwcontext_mediacodec.h
+  hwcontext_opencl.h
+  hwcontext_qsv.h
+  hwcontext_vaapi.h
+  hwcontext_vdpau.h
+  hwcontext_videotoolbox.h
+  hwcontext_vulkan.h
+  hwcontext.h
   imgutils.h
   intfloat.h
   intreadwrite.h
@@ -36,12 +53,12 @@ set(public_headers
   log.h
   lzo.h
   macros.h
+  mastering_display_metadata.h
   mathematics.h
   md5.h
   mem.h
   motion_vector.h
   murmur3.h
-  old_pix_fmts.h
   opt.h
   parseutils.h
   pixdesc.h
@@ -49,24 +66,27 @@ set(public_headers
   pixfmt.h
   random_seed.h
   rational.h
+  rc4.h
   replaygain.h
   ripemd.h
   samplefmt.h
   sha.h
   sha512.h
+  spherical.h
   stereo3d.h
+  tea.h
   threadmessage.h
   time.h
   timecode.h
   timestamp.h
+  tree.h
   twofish.h
+  tx.h
   version.h
+  video_enc_params.h
   xtea.h
   )
 xpGetVersionString(GIT_DESCRIBE_TAGS)
 configure_file(ffversion.h.in ffversion.h)
 list(APPEND public_headers ${CMAKE_CURRENT_BINARY_DIR}/ffversion.h)
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  list(APPEND public_headers ${FFmpeg_SOURCE_DIR}/mswbin/include/libavutil/avconfig.h)
-endif()
 install(FILES ${public_headers} DESTINATION ${incDir}/lib${lib_name})
