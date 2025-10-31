@@ -23,8 +23,3 @@ jobs:
     with:
       cmake-workflow-preset: DarwinRelease
     secrets: inherit
-  windows:
-    uses: externpro/externpro/.github/workflows/build-windows.yml@25.05.2
-    with:
-      cmake-workflow-preset: Windows
-    secrets: inherit
