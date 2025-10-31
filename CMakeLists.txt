@@ -24,24 +24,6 @@ string(JOIN "\n" EXT1
   "list(APPEND reqVars FFMPEG_LIBRARIES)"
   ""
   )
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  foreach(lib ${libs})
-    string(TOUPPER ${lib} LIB)
-    file(READ "lib${lib}/version.h" VERSION_H_CONTENTS)
-    string(REGEX MATCH "#define[ \t]+LIB${LIB}_VERSION_MAJOR[ \t]+([0-9]+)" _ ${VERSION_H_CONTENTS})
-    set(VERSION_MAJOR ${CMAKE_MATCH_1})
-    list(APPEND dlls ${lib}-${VERSION_MAJOR}.dll)
-  endforeach()
-  string(JOIN "\n" EXT3
-    "# FFMPEG_DLLNAMES - the FFmpeg shared object names (dll, so)"
-    "set(FFMPEG_DLLNAMES ${dlls})"
-    "# FFMPEG_DLLS - the full path to FFmpeg shared objects (dll, so)"
-    "set(FFMPEG_DLLS \${FFMPEG_DLLNAMES})"
-    "list(TRANSFORM FFMPEG_DLLS PREPEND \${XP_ROOTDIR}/${CMAKE_INSTALL_BINDIR}/)"
-    "list(APPEND reqVars FFMPEG_DLLNAMES FFMPEG_DLLS)"
-    ""
-    )
-endif()
 if(NOT DEFINED XP_INSTALL_CMAKEDIR)
   set(XP_INSTALL_CMAKEDIR ${CMAKE_INSTALL_DATADIR}/cmake)
 endif()
@@ -50,13 +32,6 @@ xpPackageDevel(TARGETS_FILE ${targetsFile} DEPS openh264)
 install(FILES cmake/${targetsFile}.cmake DESTINATION ${XP_INSTALL_CMAKEDIR})
 string(TOLOWER ${PROJECT_NAME} prj)
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  set(mswLibs ${libs})
-  list(TRANSFORM mswLibs PREPEND "mswbin/bin/")
-  list(TRANSFORM mswLibs APPEND "${CMAKE_STATIC_LIBRARY_SUFFIX}")
-  set(mswDlls ${dlls})
-  list(TRANSFORM mswDlls PREPEND "mswbin/bin/")
-  install(FILES ${mswLibs} DESTINATION ${CMAKE_INSTALL_LIBDIR})
-  install(PROGRAMS ${mswDlls} DESTINATION ${CMAKE_INSTALL_BINDIR})
   set(incDir ${CMAKE_INSTALL_INCLUDEDIR}/${prj})
   foreach(lib ${libs})
     add_subdirectory(lib${lib}) # each library installs headers to incDir
