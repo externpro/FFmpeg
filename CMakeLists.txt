@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
 project(FFmpeg)
-include(GNUInstallDirs)
-include(xpflags)
 set(libs # libraries, in linking order
   # https://github.com/FFmpeg/FFmpeg/blob/n2.6.2/configure#L2667-L2675
   avdevice
