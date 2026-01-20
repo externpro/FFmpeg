@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
 project(FFmpeg)
-include(GNUInstallDirs)
-include(xpflags)
 set(libs # libraries, in linking order
   # https://github.com/FFmpeg/FFmpeg/blob/n2.6.2/configure#L2667-L2675
   avdevice
@@ -18,17 +16,15 @@ string(JOIN "\n" EXT1
   "# https://github.com/FFmpeg/FFmpeg/blob/n2.6.2/configure#L2667-L2675"
   "# TRICKY ffmpeg_all_libs used by FFmpeg-targets.cmake"
   "set(ffmpeg_all_libs ${libs})"
-  "# FFMPEG_LIBRARIES - the FFmpeg libraries"
-  "set(FFMPEG_LIBRARIES \${ffmpeg_all_libs})"
-  "list(TRANSFORM FFMPEG_LIBRARIES PREPEND ffmpeg::)"
-  "list(APPEND reqVars FFMPEG_LIBRARIES)"
   ""
   )
-if(NOT DEFINED XP_INSTALL_CMAKEDIR)
-  set(XP_INSTALL_CMAKEDIR ${CMAKE_INSTALL_DATADIR}/cmake)
-endif()
 set(targetsFile ${PROJECT_NAME}-targets)
-xpPackageDevel(TARGETS_FILE ${targetsFile} DEPS openh264)
+xpExternPackage(NAMESPACE ffmpeg
+  TARGETS_FILE ${targetsFile} LIBRARIES ${libs}
+  BASE n4.3.1 XPDIFF "native(unix)" DEPS openh264 PVT_DEPS yasm
+  DESC "complete, cross-platform solution to record, convert and stream audio and video (pre-release: no windows package)"
+  LICENSE "[LGPL-2.1](https://www.ffmpeg.org/legal.html 'LGPL version 2.1 or later')"
+  )
 install(FILES cmake/${targetsFile}.cmake DESTINATION ${XP_INSTALL_CMAKEDIR})
 string(TOLOWER ${PROJECT_NAME} prj)
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
