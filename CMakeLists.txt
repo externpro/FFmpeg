@@ -22,6 +22,7 @@ set(targetsFile ${PROJECT_NAME}-targets)
 xpExternPackage(NAMESPACE ffmpeg
   TARGETS_FILE ${targetsFile} LIBRARIES ${libs}
   BASE n4.3.1 XPDIFF "native(unix)" DEPS openh264 PVT_DEPS yasm
+  WEB "https://www.ffmpeg.org/" UPSTREAM "github.com/FFmpeg/FFmpeg"
   DESC "complete, cross-platform solution to record, convert and stream audio and video (pre-release: no windows package)"
   LICENSE "[LGPL-2.1](https://www.ffmpeg.org/legal.html 'LGPL version 2.1 or later')"
   )
