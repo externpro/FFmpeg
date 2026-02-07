@@ -44,7 +44,7 @@ xpExternPackage(NAMESPACE ffmpeg
   DESC "complete, cross-platform solution to record, convert and stream audio and video"
   LICENSE "[LGPL-2.1](https://www.ffmpeg.org/legal.html 'LGPL version 2.1 or later')"
   )
-install(FILES cmake/${targetsFile}.cmake DESTINATION ${XP_INSTALL_CMAKEDIR})
+install(FILES cmake/${targetsFile}.cmake DESTINATION ${CMAKE_INSTALL_CMAKEDIR})
 string(TOLOWER ${PROJECT_NAME} prj)
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
   set(mswLibs ${libs})
