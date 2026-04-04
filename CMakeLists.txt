@@ -42,7 +42,7 @@ xpExternPackage(NAMESPACE ffmpeg
   BASE n2.6.2 XPDIFF "bin(msw), native(unix)" DEPS openh264 PVT_DEPS yasm
   WEB "https://www.ffmpeg.org/" UPSTREAM "github.com/FFmpeg/FFmpeg"
   DESC "complete, cross-platform solution to record, convert and stream audio and video"
-  LICENSE "[LGPL-2.1](https://www.ffmpeg.org/legal.html 'LGPL version 2.1 or later')"
+  LICENSE "[LGPL-2.1-or-later](https://www.ffmpeg.org/legal.html 'LGPL version 2.1 or later')"
   )
 install(FILES cmake/${targetsFile}.cmake DESTINATION ${CMAKE_INSTALL_CMAKEDIR})
 string(TOLOWER ${PROJECT_NAME} prj)
