@@ -14,12 +14,20 @@ set(_ffmpeg_avcodec_libs openh264::openh264)
 # _ffmpeg_*_deps
 set(_ffmpeg_avdevice_deps avfilter avformat)
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  find_library(AudioToolbox_LIB AudioToolbox)
+  find_library(Security_LIB Security)
+  find_library(VideoToolbox_LIB VideoToolbox)
+  find_library(OpenGL_LIB OpenGL)
   find_library(Cocoa_LIB Cocoa)
   find_library(AVFoundation_LIB AVFoundation)
   find_library(CoreMedia_LIB CoreMedia)
   find_library(VideoDecodeAcceleration_LIB VideoDecodeAcceleration)
   find_library(QuartzCore_LIB QuartzCore)
   set(_ffmpeg_avdevice_libs
+    ${AudioToolbox_LIB}
+    ${Security_LIB}
+    ${VideoToolbox_LIB}
+    ${OpenGL_LIB}
     ${Cocoa_LIB}
     ${AVFoundation_LIB}
     ${CoreMedia_LIB}
