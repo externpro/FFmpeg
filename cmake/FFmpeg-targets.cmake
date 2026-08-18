@@ -10,8 +10,7 @@ endfunction()
 # _ffmpeg_*_libs
 checkLibraryConcat(asound snd_strerror _ffmpeg_avdevice_libs)
 checkLibraryConcat(Xext XShmDetach _ffmpeg_avdevice_libs)
-xpGetPkgVar(openh264 LIBRARIES) # sets OPENH264_LIBRARIES
-set(_ffmpeg_avcodec_libs ${OPENH264_LIBRARIES})
+set(_ffmpeg_avcodec_libs openh264::openh264)
 # _ffmpeg_*_deps
 set(_ffmpeg_avdevice_deps avfilter avformat)
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
@@ -39,27 +38,27 @@ get_filename_component(XP_ROOTDIR ${CMAKE_CURRENT_LIST_DIR}/../.. ABSOLUTE)
 get_filename_component(XP_ROOTDIR ${XP_ROOTDIR} ABSOLUTE) # remove relative parts
 set(includeDirs ${XP_ROOTDIR}/include ${XP_ROOTDIR}/include/ffmpeg)
 foreach(lib ${ffmpeg_all_libs})
-  if(NOT TARGET ffmpeg::${lib})
-    add_library(ffmpeg::${lib} STATIC IMPORTED)
+  if(NOT TARGET FFmpeg::${lib})
+    add_library(FFmpeg::${lib} STATIC IMPORTED)
     set(${lib}_RELEASE ${XP_ROOTDIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${lib}${CMAKE_STATIC_LIBRARY_SUFFIX})
     if(EXISTS "${${lib}_RELEASE}")
-      set_property(TARGET ffmpeg::${lib} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-      set_target_properties(ffmpeg::${lib} PROPERTIES
+      set_property(TARGET FFmpeg::${lib} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+      set_target_properties(FFmpeg::${lib} PROPERTIES
         IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "ASM_NASM;C;CXX"
         IMPORTED_LOCATION_RELEASE "${${lib}_RELEASE}"
         )
-      set_target_properties(ffmpeg::${lib} PROPERTIES
+      set_target_properties(FFmpeg::${lib} PROPERTIES
         INTERFACE_INCLUDE_DIRECTORIES "${includeDirs}"
         )
       if(_ffmpeg_${lib}_deps OR _ffmpeg_${lib}_libs)
         unset(linkLibs)
         foreach(dep ${_ffmpeg_${lib}_deps})
-          list(APPEND linkLibs \$<LINK_ONLY:ffmpeg::${dep}>)
+          list(APPEND linkLibs \$<LINK_ONLY:FFmpeg::${dep}>)
         endforeach()
         foreach(dep ${_ffmpeg_${lib}_libs})
           list(APPEND linkLibs \$<LINK_ONLY:${dep}>)
         endforeach()
-        set_target_properties(ffmpeg::${lib} PROPERTIES
+        set_target_properties(FFmpeg::${lib} PROPERTIES
           INTERFACE_LINK_LIBRARIES "${linkLibs}"
           )
       endif()

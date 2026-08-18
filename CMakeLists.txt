@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
-set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
+cmake_minimum_required(VERSION 4.3)
 project(FFmpeg)
 set(libs # libraries, in linking order
   # https://github.com/FFmpeg/FFmpeg/blob/n2.6.2/configure#L2667-L2675
@@ -19,9 +18,8 @@ string(JOIN "\n" EXT1
   ""
   )
 set(targetsFile ${PROJECT_NAME}-targets)
-xpExternPackage(NAMESPACE ffmpeg
-  TARGETS_FILE ${targetsFile} LIBRARIES ${libs}
-  BASE n4.3.1 XPDIFF "native(unix)" DEPS openh264 PVT_DEPS yasm
+xpExternPackage(TARGETS_FILE ${targetsFile} LIBRARIES ${libs} NO_EXPORT
+  BASE n4.3.1 XPDIFF "native[unix]" DEPS openh264 PVT_DEPS yasm
   WEB "https://www.ffmpeg.org/" UPSTREAM "github.com/FFmpeg/FFmpeg"
   DESC "complete, cross-platform solution to record, convert and stream audio and video (pre-release: no windows package)"
   LICENSE "[LGPL-2.1-or-later](https://www.ffmpeg.org/legal.html 'LGPL version 2.1 or later')"
@@ -37,8 +35,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 else()
   find_package(openh264)
   find_package(yasm)
-  get_filename_component(yasmBinDir ${xpuse-yasm_DIR}/../../bin ABSOLUTE)
-  configure_file(${xpuse-openh264_DIR}/openh264.pc.in ${CMAKE_BINARY_DIR}/openh264.pc @ONLY)
+  get_filename_component(yasmBinDir ${yasm_DIR}/../../bin ABSOLUTE)
+  configure_file(${openh264_DIR}/../cmake/openh264.pc.in ${CMAKE_BINARY_DIR}/openh264.pc @ONLY)
   file(READ ${CMAKE_BINARY_DIR}/openh264.pc OPENH264_PC)
   string(REPLACE "Libs: -L\${libdir} -lopenh264 -lstdc++"
     "Libs: -L\${libdir} -lopenh264 -lstdc++ -lm -lpthread"
