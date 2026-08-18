@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
-set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
+cmake_minimum_required(VERSION 4.3)
 project(FFmpeg)
 set(libs # libraries, in linking order
   # https://github.com/FFmpeg/FFmpeg/blob/n2.6.2/configure#L2667-L2675
@@ -37,9 +36,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     )
 endif()
 set(targetsFile ${PROJECT_NAME}-targets)
-xpExternPackage(NAMESPACE ffmpeg
-  TARGETS_FILE ${targetsFile} LIBRARIES ${libs}
-  BASE n2.6.2 XPDIFF "bin(msw), native(unix)" DEPS openh264 PVT_DEPS yasm
+xpExternPackage(TARGETS_FILE ${targetsFile} LIBRARIES ${libs} NO_EXPORT
+  BASE n2.6.2 XPDIFF "bin[msw], native[unix]" DEPS openh264 PVT_DEPS yasm
   WEB "https://www.ffmpeg.org/" UPSTREAM "github.com/FFmpeg/FFmpeg"
   DESC "complete, cross-platform solution to record, convert and stream audio and video"
   LICENSE "[LGPL-2.1-or-later](https://www.ffmpeg.org/legal.html 'LGPL version 2.1 or later')"
@@ -61,8 +59,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 else()
   find_package(openh264)
   find_package(yasm)
-  get_filename_component(yasmBinDir ${xpuse-yasm_DIR}/../../bin ABSOLUTE)
-  configure_file(${xpuse-openh264_DIR}/openh264.pc.in ${CMAKE_BINARY_DIR}/openh264.pc @ONLY)
+  get_filename_component(yasmBinDir ${yasm_DIR}/../../bin ABSOLUTE)
+  configure_file(${openh264_DIR}/../cmake/openh264.pc.in ${CMAKE_BINARY_DIR}/openh264.pc @ONLY)
   set(XP_CONFIGURE ${CMAKE_COMMAND} -E env PKG_CONFIG_PATH=${CMAKE_BINARY_DIR}
     PATH=${yasmBinDir}:$ENV{PATH} # prepend path to yasm
     <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> #--enable-shared --disable-static
